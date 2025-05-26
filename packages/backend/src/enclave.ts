@@ -100,13 +100,13 @@ export async function fetchEnclaves(ndk: NDK, global: GlobalContext, enclaveEven
   }
   return [...uniq.values()]
     .map((e) => e.rawEvent())
-    .filter((enc) => {
+    .filter(async (enc) => {
       const buildSignature = JSON.parse(enc.tags.find((t) => t.length > 1 && t[0] === 'build')?.[1] || '')
       if (!global.getEnclaveBuilderPubkeys().includes(buildSignature.pubkey)) return false
 
       // verify attestation
       try {
-        validateInstance(enc as Event)
+        await validateInstance(enc as Event)
       } catch (e) {
         console.log('Invalid enclave', enc, e)
         return false
