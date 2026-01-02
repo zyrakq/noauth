@@ -5,7 +5,6 @@ import typescript from '@rollup/plugin-typescript'
 import terser from '@rollup/plugin-terser'
 import json from '@rollup/plugin-json'
 import inject from '@rollup/plugin-inject'
-import dotenv from 'rollup-plugin-dotenv'
 
 export default [
   {
@@ -19,7 +18,6 @@ export default [
     plugins: [
       commonjs(),
       json(),
-      dotenv(),
       alias({
         entries: [
           { find: 'assert', replacement: 'assert' },
@@ -60,7 +58,6 @@ export default [
     plugins: [
       commonjs(),
       json(),
-      dotenv(),
       alias({
         entries: [
           { find: 'assert', replacement: 'assert' },

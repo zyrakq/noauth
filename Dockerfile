@@ -1,12 +1,12 @@
-# Базовый образ для сборки
+# Base image for building
 FROM node:22.7-alpine AS build
 
 RUN apk add --no-cache python3 make g++
 
-# Рабочая директория
+# Working directory
 WORKDIR /usr/src/app
 
-# Копируем package.json и package-lock.json в корневую директорию
+# Copy package.json and package-lock.json to the root directory
 COPY lerna.json ./
 COPY package*.json ./
 COPY packages/client/package*.json ./packages/client/
@@ -14,41 +14,45 @@ COPY packages/common/package*.json ./packages/common/
 COPY packages/backend/package*.json ./packages/backend/
 COPY packages/server/package*.json ./packages/server/
 
-# Устанавливаем зависимости в корневой директории
+# Install dependencies in the root directory
 RUN npm install
 
-# Копируем остальные файлы проекта
+# Copy the rest of the project files
 COPY . .
 
-# Выполняем сборку всех пакетов
+# Build all packages
 RUN npm run build:hosted
 
-# Образ для client
+# Image for client
 FROM nginx:alpine AS client
 
-# Копируем собранные файлы из предыдущего этапа
+# Copy built files from the previous stage
 COPY --from=build /usr/src/app/packages/client/build /usr/share/nginx/html
 
-# Копируем конфигурационный файл Nginx
+# Copy Nginx configuration file
 COPY packages/client/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Запускаем Nginx
+# Copy env-config.js generation script
+COPY packages/client/generate-env-config.sh /docker-entrypoint.d/40-generate-env-config.sh
+RUN chmod +x /docker-entrypoint.d/40-generate-env-config.sh
+
+# Nginx will automatically run scripts from /docker-entrypoint.d/ before starting
 CMD ["nginx", "-g", "daemon off;"]
 
-# Образ для server
+# Image for server
 FROM node:22.7-alpine AS server
 
-# Рабочая директория
+# Working directory
 WORKDIR /usr/src/app
 
-# Копируем файлы из предыдущего этапа
+# Copy files from the previous stage
 COPY --from=build /usr/src/app /usr/src/app
 
-# Выполнение миграций Prisma
+# Run Prisma migrations
 RUN npx prisma migrate deploy
 
-# Открываем порт
+# Expose port
 EXPOSE 8080
 
-# Запускаем сервер
+# Start the server
 CMD ["sh", "-c", "npm run start:server"]

@@ -1,15 +1,19 @@
 import { IKind } from '@/types/general'
 
-export const NOAUTHD_URL = process.env.REACT_APP_NOAUTHD_URL
-export const WEB_PUSH_PUBKEY = process.env.REACT_APP_WEB_PUSH_PUBKEY
-export const DOMAIN = process.env.REACT_APP_DOMAIN
-export const ADMIN_DOMAIN = process.env.REACT_APP_ADMIN_DOMAIN
-export const RELAY = process.env.REACT_APP_RELAY || 'wss://relay.nsec.app'
+// Get configuration from window.ENV (generated at container startup)
+const ENV = (window as any).ENV || {}
+
+export const NOAUTHD_URL = ENV.NOAUTHD_URL
+export const WEB_PUSH_PUBKEY = ENV.WEB_PUSH_PUBKEY
+export const DOMAIN = ENV.DOMAIN
+export const ADMIN_DOMAIN = ENV.ADMIN_DOMAIN
+export const RELAY = ENV.RELAY || 'wss://relay.nsec.app'
 export const NIP46_RELAYS = [RELAY]
-export const NSEC_APP_NPUB = process.env.REACT_APP_NSEC_APP_NPUB
+export const NSEC_APP_NPUB = ENV.NSEC_APP_NPUB
 export const ENCLAVE_LAUNCHER_PUBKEYS =
-  process.env.REACT_APP_ENCLAVE_LAUNCHER_PUBKEYS || '3356de61b39647931ce8b2140b2bab837e0810c0ef515bbe92de0248040b8bdd'
-export const ENCLAVE_DEBUG = process.env.REACT_APP_ENCLAVE_DEBUG || ""
+  ENV.ENCLAVE_LAUNCHER_PUBKEYS || '3356de61b39647931ce8b2140b2bab837e0810c0ef515bbe92de0248040b8bdd'
+export const ENCLAVE_DEBUG = ENV.ENCLAVE_DEBUG || ''
+export const HOSTED = ENV.HOSTED === 'true'
 
 export const RELOAD_STORAGE_KEY = 'reload'
 

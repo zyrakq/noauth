@@ -1,6 +1,6 @@
 import WebSocket from 'ws'
 import { Api, BackendRequest, GlobalContext, Key, NoauthBackend } from '@noauth/backend'
-import { DOMAIN, NIP46_RELAYS, NOAUTHD_URL, NSEC_APP_NPUB, ORIGIN } from './consts'
+import { DOMAIN, NIP46_RELAYS, NOAUTHD_URL, NSEC_APP_NPUB } from './consts'
 import http from 'http'
 // @ts-ignore
 import { dbi } from '@noauth/common/dist/dbi'

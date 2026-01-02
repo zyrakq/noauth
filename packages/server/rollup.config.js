@@ -1,7 +1,6 @@
 const commonjs = require('@rollup/plugin-commonjs')
 const typescript = require('@rollup/plugin-typescript')
 const terser = require('@rollup/plugin-terser')
-const dotenv = require('rollup-plugin-dotenv')
 
 module.exports = {
   input: 'index.ts',
@@ -14,7 +13,6 @@ module.exports = {
 
   plugins: [
     commonjs(),
-    dotenv.default(),
     typescript({
       tsconfig: 'tsconfig.json',
     }),

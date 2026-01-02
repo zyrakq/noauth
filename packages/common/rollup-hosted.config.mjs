@@ -2,7 +2,6 @@ import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import terser from '@rollup/plugin-terser'
-import dotenv from 'rollup-plugin-dotenv'
 
 export default [
   {
@@ -16,7 +15,6 @@ export default [
     plugins: [
       resolve({ browser: false, preferBuiltins: true }),
       commonjs(),
-      dotenv(),
       terser(),
       typescript({
         tsconfig: 'tsconfig.json',
@@ -34,7 +32,6 @@ export default [
     plugins: [
       resolve({ browser: false, preferBuiltins: true }),
       commonjs(),
-      dotenv(),
       terser(),
       typescript({ declaration: false }),
     ],

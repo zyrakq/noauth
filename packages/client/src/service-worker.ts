@@ -90,4 +90,6 @@ async function start() {
   await backend.start()
 }
 
-process.env.REACT_APP_HOSTED === 'false' && start()
+// Service worker is only registered in non-hosted mode (see index.tsx)
+// so we can start immediately without checking ENV.HOSTED
+start()

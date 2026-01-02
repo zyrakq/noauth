@@ -127,7 +127,8 @@ export interface BackendClient {
 }
 
 const defineClient = (): BackendClient => {
-  if (process.env.REACT_APP_HOSTED === 'true') return startClientWebSocket()
+  const ENV = (window as any).ENV || {}
+  if (ENV.HOSTED === 'true') return startClientWebSocket()
   return clientServiceWorker
 }
 

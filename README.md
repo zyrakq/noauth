@@ -1,3 +1,5 @@
+# README
+
 ## Noauth - Nostr key manager
 
 Nsec.app is a web app to store your Nostr keys
@@ -34,16 +36,16 @@ This app is non-custodial, so there isn't much need for
 self-hosting. However, if you'd like to run your own version of
 it, here is how to do it:
 
-Create web push keys (https://github.com/web-push-libs/web-push):
+Create web push keys (<https://github.com/web-push-libs/web-push>):
 
-```
+```sh
 npm install web-push;
 web-push generate-vapid-keys --json
 ```
 
-Edit .end in noauth:
+Edit .env in noauth:
 
-```
+```.env
 REACT_APP_WEB_PUSH_PUBKEY=web push public key,
 REACT_APP_NOAUTHD_URL=address of the noauthd server (see below)
 REACT_APP_DOMAIN=domain name of your bunker (i.e. nsec.app)
@@ -52,17 +54,17 @@ REACT_APP_RELAY=relay that you'll use, can use wss://relay.nsec.app - don't use 
 
 Then do:
 
-```
+```sh
 npm install;
 npm run build;
 ```
 
 The app is in the `build` folder.
 
-To run the noauthd server (https://github.com/nostrband/noauthd),
+To run the noauthd server (<https://github.com/nostrband/noauthd>),
 edit .env in noauthd:
 
-```
+```.env
 PUSH_PUBKEY=web push public key, same as above
 PUSH_SECRET=web push private key that you generated above
 ORIGIN=address of the server itself, like http://localhost:8000
@@ -75,29 +77,34 @@ BUNKER_ORIGIN=where noauth is hosted
 
 Then init the database and launch:
 
-```
+```sh
 npx prisma migrate deploy
 node -r dotenv/config src/index.js dotenv_config_path=.env
 ```
 
 ## Running Hosted Version with Docker
 
-To run the hosted version of the project using Docker Compose, follow these steps:
+1. **Configure environment variables:**
 
-1. **Build and run the Docker containers:**
+   Copy `.env.example` to `.env` and configure values:
 
-   Ensure you are in the root directory of project and then run:
+   ```sh
+   cp .env.example .env
+   ```
+
+   Edit `.env` with your settings (see comments in the file for details).
+
+2. **Build and run:**
 
    ```sh
    docker-compose up --build -d
    ```
 
-   Adjust SERVER_APP_ORIGIN in packages/server/.env if you want auth
-   url that are sent to apps to be accessible on other devices.
+3. **Access the application:**
 
-2. **Access the application:**
+   Open <http://localhost:3000> in your browser.
 
-Open your browser and navigate to http://localhost:3000 to access the hosted version of the project.
+**Note:** Environment variables are passed to containers at runtime, so you can change configuration without rebuilding images.
 
 ## TODO
 
